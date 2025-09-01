@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: alcolic-main-admin
+    env: static
+    buildCommand: npm ci --legacy-peer-deps && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REACT_APP_API_BASE_URL
+        value: https://alcolic-backend.onrender.com
+      - key: REACT_APP_ENVIRONMENT
+        value: production
+    autoDeploy: true
+    branch: main
