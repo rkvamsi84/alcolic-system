@@ -2,7 +2,7 @@ services:
   - type: web
     name: alcolic-frontend
     env: static
-    buildCommand: npm ci --legacy-peer-deps && npm run build
+    buildCommand: npm ci --include=dev --legacy-peer-deps && npm run build
     staticPublishPath: ./build
     envVars:
       - key: NODE_ENV

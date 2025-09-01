@@ -2,7 +2,7 @@ services:
   - type: web
     name: alcolic-admin
     env: static
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev --legacy-peer-deps && npm run build
     staticPublishPath: ./dist
     envVars:
       - key: NODE_ENV
