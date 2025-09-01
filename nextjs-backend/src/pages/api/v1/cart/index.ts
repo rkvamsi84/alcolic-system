@@ -65,6 +65,11 @@ async function getCart(req: NextApiRequest, res: NextApiResponse, userId: string
     });
   }
 
+  // Initialize cart if it doesn't exist
+  if (!user.cart) {
+    user.cart = [];
+  }
+
   // Filter out inactive products and calculate totals
   const activeCartItems = user.cart.filter((item: any) => 
     item.product && item.product.isActive
@@ -125,6 +130,11 @@ async function addToCart(req: NextApiRequest, res: NextApiResponse, userId: stri
       success: false,
       message: 'User not found'
     });
+  }
+
+  // Initialize cart if it doesn't exist
+  if (!user.cart) {
+    user.cart = [];
   }
 
   // Check if item already exists in cart
@@ -194,6 +204,11 @@ async function updateCartItem(req: NextApiRequest, res: NextApiResponse, userId:
     });
   }
 
+  // Initialize cart if it doesn't exist
+  if (!user.cart) {
+    user.cart = [];
+  }
+
   const itemIndex = user.cart.findIndex(
     (item: any) => item.product.toString() === productId
   );
@@ -247,6 +262,11 @@ async function removeFromCart(req: NextApiRequest, res: NextApiResponse, userId:
       success: false,
       message: 'User not found'
     });
+  }
+
+  // Initialize cart if it doesn't exist
+  if (!user.cart) {
+    user.cart = [];
   }
 
   const itemIndex = user.cart.findIndex(
