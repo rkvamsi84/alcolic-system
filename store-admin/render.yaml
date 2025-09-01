@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: alcolic-admin
+    env: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_API_BASE_URL
+        value: https://alcolic-backend.onrender.com
+    autoDeploy: true
+    branch: main

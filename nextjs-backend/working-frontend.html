@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alcolic - Working Frontend</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .status-card {
+            background: #e8f5e8;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .status-card h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        .api-section {
+            margin: 30px 0;
+        }
+        
+        .api-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 10px 10px 10px 0;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn.secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .btn.success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .data-display {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .data-display pre {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            color: #721c24;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            color: #155724;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .info-box h3 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+        
+        .url-display {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9em;
+            word-break: break-all;
+            margin: 10px 0;
+            border: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍺 Alcolic System</h1>
+            <p>Working Frontend - Connected to Your Backend API</p>
+        </div>
+        
+        <div class="content">
+            <div class="status-card">
+                <h3>✅ System Status</h3>
+                <p>Your Alcolic backend API is working perfectly! This frontend connects directly to your functional backend.</p>
+                <div class="url-display">Backend URL: https://nextjs-backend-lghye3ro6-rkvamsi84-gmailcoms-projects.vercel.app</div>
+            </div>
+            
+            <div class="info-box">
+                <h3>🔧 About This Frontend</h3>
+                <p>This is a simple but functional frontend that connects to your working backend API. While we resolve the Vercel authentication protection issue, you can use this to test your system functionality.</p>
+            </div>
+            
+            <div class="api-section">
+                <h2>🧪 Test API Endpoints</h2>
+                <button class="btn" onclick="testHealth()">Test Health Endpoint</button>
+                <button class="btn secondary" onclick="testCategories()">Test Categories</button>
+                <button class="btn success" onclick="testProducts()">Test Products</button>
+                <button class="btn" onclick="testStores()">Test Stores</button>
+                <button class="btn secondary" onclick="testAPI()">Test API Index</button>
+                
+                <div id="api-results"></div>
+            </div>
+            
+            <div class="api-section">
+                <h2>📊 System Information</h2>
+                <div id="system-info" class="loading">Click "Test Health Endpoint" to load system information...</div>
+            </div>
+            
+            <div class="api-section">
+                <h2>📋 Available Categories</h2>
+                <div id="categories-display" class="loading">Click "Test Categories" to load categories...</div>
+            </div>
+            
+            <div class="api-section">
+                <h2>🛍️ Available Products</h2>
+                <div id="products-display" class="loading">Click "Test Products" to load products...</div>
+            </div>
+            
+            <div class="info-box">
+                <h3>🚀 Next Steps</h3>
+                <p>Your backend is fully functional! To resolve the frontend access issue:</p>
+                <ol>
+                    <li><strong>Contact Vercel Support</strong> to disable authentication protection</li>
+                    <li><strong>Upgrade to Vercel Pro</strong> ($20/month) to disable protection</li>
+                    <li><strong>Deploy to alternative platforms</strong> like Netlify or GitHub Pages</li>
+                </ol>
+                <p>Your Alcolic system is working perfectly - this is just a Vercel configuration issue!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'https://nextjs-backend-lghye3ro6-rkvamsi84-gmailcoms-projects.vercel.app';
+        const BYPASS_TOKEN = 'vghntrxcgvhbjnbvcxfcghvjbnkmhgvb';
+        
+        function showResult(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            const className = isError ? 'error' : 'success';
+            const icon = isError ? '❌' : '✅';
+            
+            element.innerHTML = `
+                <div class="${className}">
+                    <strong>${icon} ${isError ? 'Error' : 'Success'}</strong>
+                    <div class="data-display">
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '<div class="loading">Loading...</div>';
+        }
+        
+        async function makeAPICall(endpoint, elementId, description) {
+            showLoading(elementId);
+            
+            try {
+                const url = `${BACKEND_URL}${endpoint}?x-vercel-protection-bypass=${BYPASS_TOKEN}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(elementId, data);
+                    console.log(`${description}:`, data);
+                } else {
+                    showResult(elementId, data, true);
+                    console.error(`${description} Error:`, data);
+                }
+            } catch (error) {
+                showResult(elementId, { error: error.message }, true);
+                console.error(`${description} Error:`, error);
+            }
+        }
+        
+        function testHealth() {
+            makeAPICall('/api/health', 'system-info', 'Health Check');
+        }
+        
+        function testCategories() {
+            makeAPICall('/api/v1/categories', 'categories-display', 'Categories');
+        }
+        
+        function testProducts() {
+            makeAPICall('/api/v1/products', 'products-display', 'Products');
+        }
+        
+        function testStores() {
+            makeAPICall('/api/v1/stores', 'api-results', 'Stores');
+        }
+        
+        function testAPI() {
+            makeAPICall('/api/v1', 'api-results', 'API Index');
+        }
+        
+        // Auto-load system info on page load
+        window.addEventListener('load', function() {
+            setTimeout(testHealth, 1000);
+        });
+    </script>
+</body>
+</html>

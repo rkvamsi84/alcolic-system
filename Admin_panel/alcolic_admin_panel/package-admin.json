@@ -1,0 +1,13 @@
+{
+  "name": "admin-role-updater",
+  "version": "1.0.0",
+  "description": "Script to update user role to admin",
+  "main": "update-admin-role.js",
+  "scripts": {
+    "update-admin": "node update-admin-role.js"
+  },
+  "dependencies": {
+    "mongoose": "^7.0.0",
+    "bcryptjs": "^2.4.3"
+  }
+}

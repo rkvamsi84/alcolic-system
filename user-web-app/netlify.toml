@@ -1,0 +1,98 @@
+[build]
+  # Build command
+  command = "npm run build"
+  
+  # Publish directory
+  publish = "build"
+  
+  # Base directory (if needed)
+  # base = "user-web-app"
+
+[build.environment]
+  # Set production environment
+  NODE_ENV = "production"
+  
+  # Set React environment
+  GENERATE_SOURCEMAP = "false"
+  
+  # Build optimization
+  CI = "false"
+
+# Redirects for SPA routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # CORS headers for API calls
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization, X-Requested-With"
+    
+    # Performance headers
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Specific headers for API calls
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization, X-Requested-With, X-API-Key"
+    Access-Control-Allow-Credentials = "false"
+
+# Headers for static assets
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Environment variables for production
+[context.production.environment]
+  NODE_ENV = "production"
+  REACT_APP_ENVIRONMENT = "production"
+  REACT_APP_API_BASE_URL = "https://nextjs-backend-iurx7hqju-rkvamsi84-gmailcoms-projects.vercel.app"
+  REACT_APP_SOCKET_URL = "https://nextjs-backend-iurx7hqju-rkvamsi84-gmailcoms-projects.vercel.app"
+
+# Environment variables for deploy previews
+[context.deploy-preview.environment]
+  NODE_ENV = "production"
+  REACT_APP_ENVIRONMENT = "preview"
+  REACT_APP_API_BASE_URL = "https://nextjs-backend-iurx7hqju-rkvamsi84-gmailcoms-projects.vercel.app"
+  REACT_APP_SOCKET_URL = "https://nextjs-backend-iurx7hqju-rkvamsi84-gmailcoms-projects.vercel.app"
+  

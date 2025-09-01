@@ -1,0 +1,81 @@
+# Render.com deployment configuration for Alcolic Project
+# This file defines all services needed for the complete application
+
+services:
+  # Backend API Service (Next.js)
+  - type: web
+    name: alcolic-backend-api
+    env: node
+    plan: free
+    buildCommand: cd nextjs-backend && npm install && npm run build
+    startCommand: cd nextjs-backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        value: mongodb+srv://alcolic:alcolic123@cluster0.mongodb.net/alcolic_db?retryWrites=true&w=majority
+      - key: CORS_ORIGIN
+        value: https://alcolic-frontend.onrender.com,https://alcolic-store-admin.onrender.com,https://alcolic-main-admin.onrender.com
+    healthCheckPath: /health
+
+  # User Frontend Web App
+  - type: web
+    name: alcolic-frontend
+    env: static
+    plan: free
+    buildCommand: cd user-web-app && npm install && npm run build
+    staticPublishPath: user-web-app/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://alcolic-backend-api.onrender.com
+      - key: REACT_APP_SOCKET_URL
+        value: https://alcolic-backend-api.onrender.com
+      - key: NODE_ENV
+        value: production
+
+  # Store Admin Panel (Vite)
+  - type: web
+    name: alcolic-store-admin
+    env: static
+    plan: free
+    buildCommand: cd store-admin && npm install && npm run build
+    staticPublishPath: store-admin/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://alcolic-backend-api.onrender.com
+      - key: VITE_APP_NAME
+        value: Alcolic Store Admin
+      - key: NODE_ENV
+        value: production
+
+  # Main Admin Panel (Node.js service)
+  - type: web
+    name: alcolic-main-admin
+    env: node
+    plan: free
+    buildCommand: cd Admin_panel/alcolic_admin_panel && npm install
+    startCommand: cd Admin_panel/alcolic_admin_panel && node src/server.js || npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: API_URL
+        value: https://alcolic-backend-api.onrender.com
+      - key: JWT_SECRET
+        generateValue: true
+
+# Database (using MongoDB Atlas - external service)
+# MongoDB connection string is configured in environment variables above
+
+# Additional configuration
+buildCommand: |
+  echo "Setting up Alcolic Project for Render deployment..."
+  echo "Backend API will be available at: https://alcolic-backend-api.onrender.com"
+  echo "Frontend will be available at: https://alcolic-frontend.onrender.com"
+  echo "Store Admin will be available at: https://alcolic-store-admin.onrender.com"
+  echo "Main Admin will be available at: https://alcolic-main-admin.onrender.com"

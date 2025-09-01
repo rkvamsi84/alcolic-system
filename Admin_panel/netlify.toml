@@ -1,0 +1,24 @@
+# Netlify configuration file
+
+[[headers]]
+  # Define which paths this specific [[headers]] block will cover.
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+    Access-Control-Allow-Headers = "Content-Type, Authorization, X-Requested-With, x-vercel-protection-bypass, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version"
+    Access-Control-Allow-Credentials = "true"
+
+# Redirect API requests to the backend
+[[redirects]]
+  from = "/api/*"
+  to = "https://nextjs-backend-lghye3ro6-rkvamsi84-gmailcoms-projects.vercel.app/api/:splat"
+  status = 200
+  force = true
+  headers = {Access-Control-Allow-Origin = "*"}
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

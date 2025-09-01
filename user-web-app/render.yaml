@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: alcolic-frontend
+    env: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REACT_APP_API_BASE_URL
+        value: https://alcolic-backend.onrender.com
+      - key: REACT_APP_SOCKET_URL
+        value: https://alcolic-backend.onrender.com
+    autoDeploy: true
+    branch: main
