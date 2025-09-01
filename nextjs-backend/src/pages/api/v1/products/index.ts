@@ -2,8 +2,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '@/config/database';
 import Product from '@/models/Product';
 import { optionalAuth } from '@/middleware/auth';
+import { corsMiddleware } from '@/middleware/cors';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Apply CORS middleware
+  await corsMiddleware(req, res);
+
   if (req.method !== 'GET') {
     return res.status(405).json({
       success: false,
@@ -36,13 +40,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       featured,
       onSale,
       sort = 'createdAt',
-      order = 'desc'
+      order = 'desc',
+      lastUpdated
     } = req.query;
 
     // Build query
     const query: any = {
       isActive: true
     };
+
+    // Add timestamp filter for polling
+    if (lastUpdated) {
+      query.updatedAt = { $gt: new Date(lastUpdated as string) };
+    }
 
     // Store filter
     if (store) {

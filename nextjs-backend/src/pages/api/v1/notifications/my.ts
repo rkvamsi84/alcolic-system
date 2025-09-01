@@ -74,9 +74,18 @@ export default async function handler(
   try {
     switch (req.method) {
       case 'GET':
-        const { limit = '10', offset = '0', unread = 'false' } = req.query;
+        const { limit = '10', offset = '0', unread = 'false', lastUpdated } = req.query;
         
         let filteredNotifications = [...mockNotifications];
+        
+        // Filter by timestamp for polling
+        if (lastUpdated) {
+          const lastUpdatedDate = new Date(lastUpdated as string);
+          filteredNotifications = filteredNotifications.filter(n => 
+            new Date(n.createdAt) > lastUpdatedDate || 
+            (n.readAt && new Date(n.readAt) > lastUpdatedDate)
+          );
+        }
         
         // Filter by unread if requested
         if (unread === 'true') {

@@ -23,6 +23,23 @@ export interface IUser extends Document {
       coordinates: [number, number];
     };
   };
+  addresses?: Array<{
+    _id?: any;
+    type: string;
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+    isDefault: boolean;
+  }>;
+  cart?: Array<{
+    _id?: any;
+    product: any;
+    quantity: number;
+    addedAt: Date;
+  }>;
+  loyaltyPoints?: number;
   preferences: {
     notifications: {
       email: boolean;
@@ -114,6 +131,37 @@ const userSchema = new Schema<IUser>({
         default: [0, 0]
       }
     }
+  },
+  addresses: [{
+    type: { type: String, required: true },
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    zipCode: { type: String, required: true },
+    country: { type: String, required: true },
+    isDefault: { type: Boolean, default: false }
+  }],
+  cart: [{
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+      required: true
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
+      default: 1
+    },
+    addedAt: {
+       type: Date,
+       default: Date.now
+     }
+   }],
+  loyaltyPoints: {
+    type: Number,
+    default: 0,
+    min: 0
   },
   preferences: {
     notifications: {

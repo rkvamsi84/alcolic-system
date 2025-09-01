@@ -25,34 +25,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const userId = (req as any).user.id;
     const userRole = (req as any).user.role;
-    const { lastUpdated } = req.query;
 
-    let query: any = {};
+    let query: any = {
+      status: { $in: ['pending', 'confirmed', 'preparing', 'out_for_delivery'] }
+    };
     
     // If user is not admin, only show their orders
     if (userRole !== 'admin') {
       query.user = userId;
     }
 
-    // Add timestamp filter for polling
-    if (lastUpdated) {
-      query.updatedAt = { $gt: new Date(lastUpdated as string) };
-    }
-
-    const orders = await Order.find(query)
+    const activeOrders = await Order.find(query)
       .populate('user', 'name email phone')
-      .populate('store', 'name address')
+      .populate('store', 'name address phone')
       .populate('items.product', 'name price images')
       .sort({ updatedAt: -1 });
 
     res.status(200).json({
       success: true,
-      count: orders.length,
-      data: orders
+      count: activeOrders.length,
+      data: activeOrders
     });
 
   } catch (error: any) {
-    console.error('Get orders error:', error);
+    console.error('Get active orders error:', error);
     
     if (error.statusCode) {
       return res.status(error.statusCode).json({

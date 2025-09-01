@@ -3,9 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // Enable standalone output for better performance
-  output: 'standalone',
-  
   // Environment variables
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,

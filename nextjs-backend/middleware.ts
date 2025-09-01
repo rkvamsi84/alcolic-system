@@ -33,7 +33,7 @@ export function middleware(request: NextRequest) {
     }
     
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, x-vercel-protection-bypass, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, authorization, X-Requested-With, x-vercel-protection-bypass, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version');
     response.headers.set('Access-Control-Allow-Credentials', 'true');
 
     // Handle preflight requests
